@@ -87,10 +87,10 @@ export class BlogController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Delete a blog post' })
     @ApiResponse({ 
-        status: HttpStatus.NO_CONTENT, 
+        status: HttpStatus.OK, 
         description: 'Blog post deleted successfully'
     })
-    @HttpCode(HttpStatus.NO_CONTENT)
+    @HttpCode(HttpStatus.OK)
     async remove(
         @Param('id', ParseIntPipe) id: number,
         @Request() req
