@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { Blog } from "src/modules/blog/entities/blog.entity";
 import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
@@ -18,6 +19,9 @@ export class User {
     @MinLength(8, { message: 'Password must be at least 8 characters long' })
     @IsNotEmpty({ message: 'Password is required' })
     password: string;
+
+    @OneToMany(() => Blog, blog => blog.author)
+    blogs: Blog[];
 
     @CreateDateColumn({ type: 'timestamp' })
     createdDate: Date;

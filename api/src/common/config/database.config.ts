@@ -1,4 +1,5 @@
 import { User } from 'src/modules/auth/entities/user.entity';
+import { Blog } from 'src/modules/blog/entities/blog.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 export const getDatabaseConfig = (): DataSourceOptions => ({
@@ -8,7 +9,7 @@ export const getDatabaseConfig = (): DataSourceOptions => ({
   username: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [User],
+  entities: [User, Blog],
   synchronize: process.env.NODE_ENV !== 'production',
   logging: process.env.NODE_ENV === 'production',
 });
