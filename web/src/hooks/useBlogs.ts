@@ -73,16 +73,25 @@ export const useBlogs = () => {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>, 
     field: keyof Blog
-  ) => {
+) => {
     if (editedBlog) {
-      setEditedBlog({
-        ...editedBlog,
-        [field]: e.target.value,
-      });
+        setEditedBlog({
+            ...editedBlog,
+            [field]: e.target.value
+        });
     }
-  };
+};
+
+const handleRichTextChange = (field: keyof Blog, value: string) => {
+    if (editedBlog) {
+        setEditedBlog({
+            ...editedBlog,
+            [field]: value
+        });
+    }
+};
 
   return {
     blogs: data?.data ?? [],
@@ -98,5 +107,6 @@ export const useBlogs = () => {
         handleCancel,
         handleDelete,
         handleInputChange,
+        handleRichTextChange
   };
 }
