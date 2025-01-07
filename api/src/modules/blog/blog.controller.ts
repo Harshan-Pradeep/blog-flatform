@@ -26,7 +26,7 @@ import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor'
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageUploadInterceptor } from 'src/common/interceptors/file-upload.interceptor';
 
-@ApiTags('blogs')
+@ApiTags('Blog API')
 @Controller('blogs')
 @UseInterceptors(LoggingInterceptor, ResponseInterceptor)
 export class BlogController {

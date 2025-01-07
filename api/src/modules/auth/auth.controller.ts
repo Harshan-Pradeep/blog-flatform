@@ -25,7 +25,7 @@ import { LoggingInterceptor } from '../../common/interceptors/logging.intercepto
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { ResponseInterceptor } from 'src/common/interceptors/response.interceptor';
 
-@ApiTags('Authentication')
+@ApiTags('Auth API')
 @Controller('auth')
 @UseInterceptors(ResponseInterceptor, LoggingInterceptor)
 @SerializeOptions({ strategy: 'excludeAll' })
