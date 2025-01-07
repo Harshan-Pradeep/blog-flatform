@@ -1,8 +1,8 @@
 import React from 'react';
 import { useBlogs } from "../hooks/useBlogs";
 import BlogCard from '../components/BlogCard';
-import Navbar from '../components/Navbar ';
 import Footer from '../components/Footer ';
+import Navbar from '../components/Navbar ';
 
 const HomePage: React.FC = () => {
   const { blogs, isLoading, error } = useBlogs();

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Edit2, Trash2, Check, X, ImageIcon } from 'lucide-react';
+import { Editor } from '@tinymce/tinymce-react';
 import type { Blog } from '../types/blog.types';
 import { Card, CardContent } from './card';
 
@@ -11,7 +12,10 @@ type BlogsGridProps = {
     onSave: () => void;
     onCancel: () => void;
     onDelete: (blog: Blog) => void;
-    onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>, field: keyof Blog) => void;
+    onInputChange: {
+        richText: (field: keyof Blog, value: string) => void;
+        regular: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>, field: keyof Blog) => void;
+    };
 };
 
 const BlogsGrid: React.FC<BlogsGridProps> = ({
@@ -26,14 +30,30 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
 }) => {
     const renderEditableField = (
         blog: Blog,
-        field: keyof Blog,
-        type: 'text' | 'textarea' | 'select' = 'text'
+        field: keyof Blog
     ) => {
         const displayBlog = (editingId === blog.id && editedBlog) ? editedBlog : blog;
 
         if (editingId !== blog.id) {
             if (field === 'content') {
-                return displayBlog[field].substring(0, 150) + (displayBlog[field].length > 150 ? '...' : '');
+                return (
+                    <div 
+                        className="prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ 
+                            __html: displayBlog[field].length > 300 
+                                ? displayBlog[field].substring(0, 300) + '...' 
+                                : displayBlog[field] 
+                        }} 
+                    />
+                );
+            }
+            if (field === 'title') {
+                return (
+                    <div 
+                        className="prose max-w-none" 
+                        dangerouslySetInnerHTML={{ __html: displayBlog[field] }} 
+                    />
+                );
             }
             return displayBlog[field];
         }
@@ -44,7 +64,7 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
             return (
                 <select
                     value={editedBlog.status}
-                    onChange={(e) => onInputChange(e, 'status')}
+                    onChange={(e) => onInputChange.regular(e, 'status')}
                     className="w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 
                              focus:ring-blue-500 focus:border-blue-500"
                 >
@@ -56,24 +76,44 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
 
         if (field === 'content') {
             return (
-                <textarea
+                <Editor
+                apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
                     value={editedBlog[field]}
-                    onChange={(e) => onInputChange(e, field)}
-                    className="w-full border rounded-lg px-3 py-2 min-h-[120px] focus:ring-2 
-                             focus:ring-blue-500 focus:border-blue-500"
+                    onEditorChange={(content) => onInputChange.richText(field, content)}
+                    init={{
+                        height: 300,
+                        menubar: true,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif; font-size: 16px; }',
+                    }}
                 />
             );
         }
 
-        return (
-            <input
-                type={type}
-                value={editedBlog[field]}
-                onChange={(e) => onInputChange(e, field)}
-                className="w-full border rounded-lg px-3 py-2 focus:ring-2 
-                         focus:ring-blue-500 focus:border-blue-500"
-            />
-        );
+        if (field === 'title') {
+            return (
+                <Editor
+                apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+                    value={editedBlog[field]}
+                    onEditorChange={(content) => onInputChange.richText(field, content)}
+                    init={{
+                        height: 100,
+                        menubar: false,
+                        plugins: ['advlist', 'lists', 'link', 'paste'],
+                        toolbar: 'undo redo | formatselect | bold italic',
+                        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif; font-size: 16px; }',
+                    }}
+                />
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -81,7 +121,6 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
             {blogs.map((blog) => (
                 <Card key={blog.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
-                        {/* Add Image Display */}
                         {blog.imageUrl ? (
                             <div className="aspect-video w-full overflow-hidden mb-4">
                                 <img

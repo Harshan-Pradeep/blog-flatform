@@ -23,6 +23,7 @@ const DashboardPage = () => {
         handleCancel,
         handleDelete,
         handleInputChange,
+        handleRichTextChange,
     } = useBlogs();
 
     const handleDeleteClick = async (blog: Blog) => {
@@ -99,15 +100,18 @@ const DashboardPage = () => {
                     </Card>
                 ) : (
                     <BlogsGrid
-                        blogs={blogs}
-                        editingId={editingId}
-                        editedBlog={editedBlog}
-                        onEdit={handleEdit}
-                        onSave={handleSaveClick}
-                        onCancel={handleCancel}
-                        onDelete={handleDeleteClick}
-                        onInputChange={handleInputChange}
-                    />
+    blogs={blogs}
+    editingId={editingId}
+    editedBlog={editedBlog}
+    onEdit={handleEdit}
+    onSave={handleSaveClick}
+    onCancel={handleCancel}
+    onDelete={handleDeleteClick}
+    onInputChange={{
+        richText: handleRichTextChange,
+        regular: handleInputChange
+    }}
+/>
                 )}
             </div>
         </div>
