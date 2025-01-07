@@ -3,6 +3,7 @@ import { BlogController } from './blog.controller';
 import { BlogService } from './blog.service';
 import { DatabaseModule } from 'src/common/database/database.module';
 import { BlogRepository } from './repositories/blog.repository';
+import { CloudinaryService } from './cloudinary.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -13,7 +14,9 @@ import { BlogRepository } from './repositories/blog.repository';
       useClass: BlogRepository
 
     },
-    BlogService],
-    exports: [BlogService]
+    BlogService,
+    CloudinaryService
+  ],
+  exports: [BlogService]
 })
-export class BlogModule {}
+export class BlogModule { }

@@ -13,4 +13,7 @@ export class CreateBlogDto {
     @IsOptional()
     @IsEnum(BlogStatus)
     status?: BlogStatus;
+
+    @IsOptional()
+    image?: Express.Multer.File;
 }
