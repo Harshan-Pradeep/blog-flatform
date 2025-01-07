@@ -23,8 +23,8 @@ async function bootstrap() {
   }));
 
   const config = new DocumentBuilder()
-    .setTitle('Auth Service API')
-    .setDescription('This API allows cookie based Authentication and Authorization')
+    .setTitle('Blog Platform APIs')
+    .setDescription('This APIs allows cookie based Authentication, Authorization and Blogs related CRUD operations')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

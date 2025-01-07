@@ -24,25 +24,16 @@ import { ResponseInterceptor } from '../../common/interceptors/response.intercep
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageUploadInterceptor } from 'src/common/interceptors/file-upload.interceptor';
 
-@ApiTags('blogs')
+@ApiTags('Blog API')
 @Controller('blogs')
 @UseInterceptors(LoggingInterceptor, ResponseInterceptor)
 export class BlogController {
     constructor(private readonly blogService: BlogService) { }
 
     @Post()
-    @UseInterceptors(FileInterceptor('image', {
-        fileFilter: (req, file, callback) => {
-            if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-                return callback(new BadRequestException('Only image files are allowed!'), false);
-            }
-            callback(null, true);
-        },
-        limits: {
-            fileSize: 5 * 1024 * 1024
-        }
-    }))
+    @UseInterceptors(ImageUploadInterceptor())
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Create a new blog post' })
@@ -102,17 +93,7 @@ export class BlogController {
     }
 
     @Put(':id')
-    @UseInterceptors(FileInterceptor('image', {
-        fileFilter: (req, file, callback) => {
-            if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-                return callback(new BadRequestException('Only image files are allowed!'), false);
-            }
-            callback(null, true);
-        },
-        limits: {
-            fileSize: 5 * 1024 * 1024
-        }
-    }))
+    @UseInterceptors(ImageUploadInterceptor())
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Update a blog post' })
