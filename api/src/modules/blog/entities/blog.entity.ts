@@ -20,6 +20,9 @@ export class Blog {
     })
     status: BlogStatus;
 
+    @Column({ nullable: true })
+    imageUrl: string;
+    
     @Column({ name: 'author_id' })
     authorId: number;
 
