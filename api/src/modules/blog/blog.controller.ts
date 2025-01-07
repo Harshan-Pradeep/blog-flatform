@@ -33,16 +33,14 @@ export class BlogController {
 
     @Post()
     @UseInterceptors(FileInterceptor('image', {
-        // Add file filter for images
         fileFilter: (req, file, callback) => {
             if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
                 return callback(new BadRequestException('Only image files are allowed!'), false);
             }
             callback(null, true);
         },
-        // Optional: Add limits
         limits: {
-            fileSize: 5 * 1024 * 1024 // 5MB
+            fileSize: 5 * 1024 * 1024
         }
     }))
     @UseGuards(JwtAuthGuard)
@@ -104,6 +102,17 @@ export class BlogController {
     }
 
     @Put(':id')
+    @UseInterceptors(FileInterceptor('image', {
+        fileFilter: (req, file, callback) => {
+            if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+                return callback(new BadRequestException('Only image files are allowed!'), false);
+            }
+            callback(null, true);
+        },
+        limits: {
+            fileSize: 5 * 1024 * 1024
+        }
+    }))
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Update a blog post' })
@@ -114,7 +123,8 @@ export class BlogController {
     async update(
         @Param('id', ParseIntPipe) id: number,
         @Body() updateBlogDto: UpdateBlogDto,
-        @Request() req
+        @Request() req,
+        @UploadedFile() image: Express.Multer.File,
     ): Promise<Blog> {
         return await this.blogService.update(id, updateBlogDto);
     }

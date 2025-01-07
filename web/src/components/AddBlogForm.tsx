@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BlogFormData, BlogSchema } from "../schemas/blog.schema";
 import { Status } from '../types/status.enum';
+import { useState } from 'react';
 
 type AddBlogFormProps = {
     onSubmit: (data: BlogFormData) => Promise<void>;
@@ -11,13 +12,32 @@ type AddBlogFormProps = {
 };
 
 const AddBlogForm = ({ onSubmit, onCancel, isSubmitting = false, error }: AddBlogFormProps) => {
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm<BlogFormData>({
         resolver: zodResolver(BlogSchema),
     });
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setValue('image', file);
+            
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setValue('image', undefined);
+            setImagePreview(null);
+        }
+    };
 
     return (
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -70,7 +90,36 @@ const AddBlogForm = ({ onSubmit, onCancel, isSubmitting = false, error }: AddBlo
                             </p>
                         )}
                     </div>
-
+                    <div>
+                        <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+                            Blog Image
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/png,image/jpeg,image/gif"
+                            onChange={handleImageChange}
+                            className="mt-1 block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-blue-50 file:text-blue-700
+                                hover:file:bg-blue-100"
+                        />
+                        {errors.image && (
+                            <p className="mt-1 text-sm text-red-600">
+                                {errors.image.message as string}
+                            </p>
+                        )}
+                        {imagePreview && (
+                            <div className="mt-4">
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="h-48 w-auto object-cover rounded-lg"
+                                />
+                            </div>
+                        )}
+                    </div>
                     <div>
                         <label htmlFor="status" className="block text-sm font-medium text-gray-700">
                             Status

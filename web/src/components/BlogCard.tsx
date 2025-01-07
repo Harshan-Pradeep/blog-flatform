@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Image as ImageIcon } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ interface BlogCardProps {
 
 const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const formattedDate = new Date(blog.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -28,6 +29,22 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
         className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 
                  cursor-pointer overflow-hidden flex flex-col h-full border border-gray-200"
       >
+        {/* Card Image Section */}
+        {blog.imageUrl && !imageError ? (
+          <div className="aspect-video w-full overflow-hidden">
+            <img
+              src={blog.imageUrl}
+              alt={blog.title}
+              className="w-full h-full object-cover transition-transform duration-200 hover:scale-105"
+              onError={() => setImageError(true)}
+            />
+          </div>
+        ) : (
+          <div className="aspect-video w-full bg-gray-100 flex items-center justify-center">
+            <ImageIcon className="w-8 h-8 text-gray-400" />
+          </div>
+        )}
+
         <div className="p-6">
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
             <span className={`px-2 py-1 rounded-full text-xs ${
@@ -86,6 +103,18 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
               {blog.title}
             </DialogTitle>
           </DialogHeader>
+          
+          {/* Dialog Image Section */}
+          {blog.imageUrl && !imageError && (
+            <div className="mt-4 rounded-lg overflow-hidden">
+              <img
+                src={blog.imageUrl}
+                alt={blog.title}
+                className="w-full h-auto object-cover rounded-lg"
+                onError={() => setImageError(true)}
+              />
+            </div>
+          )}
           
           <div className="mt-6">
             <p className="text-gray-600 whitespace-pre-wrap">

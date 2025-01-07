@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit2, Trash2, Check, X } from 'lucide-react';
+import { Edit2, Trash2, Check, X, ImageIcon } from 'lucide-react';
 import type { Blog } from '../types/blog.types';
 import { Card, CardContent } from './card';
 
@@ -29,11 +29,13 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
         field: keyof Blog,
         type: 'text' | 'textarea' | 'select' = 'text'
     ) => {
+        const displayBlog = (editingId === blog.id && editedBlog) ? editedBlog : blog;
+
         if (editingId !== blog.id) {
             if (field === 'content') {
-                return blog[field].substring(0, 150) + (blog[field].length > 150 ? '...' : '');
+                return displayBlog[field].substring(0, 150) + (displayBlog[field].length > 150 ? '...' : '');
             }
-            return blog[field];
+            return displayBlog[field];
         }
 
         if (!editedBlog) return null;
@@ -79,6 +81,21 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
             {blogs.map((blog) => (
                 <Card key={blog.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
+                        {/* Add Image Display */}
+                        {blog.imageUrl ? (
+                            <div className="aspect-video w-full overflow-hidden mb-4">
+                                <img
+                                    src={blog.imageUrl}
+                                    alt={blog.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        ) : (
+                            <div className="aspect-video w-full bg-gray-100 flex items-center justify-center mb-4">
+                                <ImageIcon className="w-8 h-8 text-gray-400" />
+                            </div>
+                        )}
+
                         <div className="space-y-4">
                             <div>
                                 <div className="flex justify-between items-start mb-2">
@@ -128,10 +145,11 @@ const BlogsGrid: React.FC<BlogsGridProps> = ({
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                                    <span className={`px-2 py-1 rounded-full text-xs ${blog.status === 'published'
+                                    <span className={`px-2 py-1 rounded-full text-xs ${
+                                        (editingId === blog.id && editedBlog ? editedBlog.status : blog.status) === 'published'
                                             ? 'bg-green-100 text-green-800'
                                             : 'bg-gray-100 text-gray-800'
-                                        }`}>
+                                    }`}>
                                         {renderEditableField(blog, 'status')}
                                     </span>
                                     <span>·</span>
