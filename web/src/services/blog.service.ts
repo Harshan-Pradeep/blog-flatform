@@ -23,18 +23,34 @@ export const blogService = {
     },
 
     createBlog: async (blog: BlogFormData) => {
-        const response = await api.post<Blog>('/blogs', blog);
+        const formData = new FormData();
+        formData.append('title', blog.title);
+        formData.append('content', blog.content);
+        formData.append('status', blog.status);
+        if (blog.image instanceof File) {
+            formData.append('image', blog.image);
+        }
+        const response = await api.post<Blog>('/blogs', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response.data;
     },
 
     updateBlog: async (id: number, blog: BlogFormData) => {
-        const filteredData: BlogFormData = {
-            title: blog.title,
-            content: blog.content,
-            status: blog.status,
-        };
-
-        const response = await api.put<Blog>(`/blogs/${id}`,filteredData);
+        const formData = new FormData();
+        formData.append('title', blog.title);
+        formData.append('content', blog.content);
+        formData.append('status', blog.status);
+        if (blog.image instanceof File) {
+            formData.append('image', blog.image);
+        }
+        const response = await api.put<Blog>(`/blogs/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response.data;
     },
 

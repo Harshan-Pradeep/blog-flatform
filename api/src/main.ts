@@ -10,8 +10,8 @@ async function bootstrap() {
   app.use(cookieParser());
   
   app.enableCors({
-    origin: 'http://localhost:5173', // Replace with your frontend URL
-    credentials: true, // Allow credentials (cookies, etc.)
+    origin: 'http://localhost:5173',
+    credentials: true,
   });
   
   app.useGlobalFilters(new GlobalExceptionFilter());
