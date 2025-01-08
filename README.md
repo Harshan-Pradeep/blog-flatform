@@ -36,12 +36,27 @@ A full-stack blog platform featuring an admin panel for content management and a
 - Jest for unit testing
 
 ## Interface Previews
-![Home Panel Interface](./web/src/assets/home-1.svg)
+
+Home panel  
+![Home Panel Interface](./web/src/assets/home-1.png)
+
+Blog post card  
+![Home Panel Interface](./web/src/assets/home-2.png)
+
+Login panel  
+![Login Panel Interface](./web/src/assets/login.png)
+
+Dashboard panel  
+![Dashboard Panel Interface](./web/src/assets/dashboard-1.png)
+
+Add blog post panel  
+![Dashboard Panel Interface](./web/src/assets/dashboard-2.png)
+
 
 ## Prerequisites
 
-- Node.js (v14 or higher)
-- MySQL (v5.7 or higher)
+- Node.js
+- MySQL
 - npm package manager
 
 ## Project Structure
