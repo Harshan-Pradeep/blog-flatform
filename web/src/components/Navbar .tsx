@@ -10,9 +10,11 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
+  const isAdminPage = location.pathname.startsWith('/admin');
+
   const navItems = [
     { path: '/', label: 'Home' },
-    { path: '/login', label: 'Login' }
+    ...(!isAdminPage ? [{ path: '/login', label: 'Login' }] : [])
   ];
 
   const NavLink = ({ path, label }: { path: string; label: string }) => (
