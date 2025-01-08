@@ -35,6 +35,8 @@ A full-stack blog platform featuring an admin panel for content management and a
 - Swagger for API documentation
 - Jest for unit testing
 
+## Interface Previews
+
 ## Prerequisites
 
 - Node.js (v14 or higher)
