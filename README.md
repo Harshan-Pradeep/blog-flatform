@@ -96,7 +96,7 @@ VITE_TINYMCE_API_KEY   # TinyMCE editor API key
 
 1. Clone the repository
 ```bash
-git clone <[https://github.com/Harshan-Pradeep/blog-platform.git](https://github.com/Harshan-Pradeep/blog-platform.git)>
+git clone <https://github.com/Harshan-Pradeep/blog-platform.git>
 cd blog-platform
 ```
 
