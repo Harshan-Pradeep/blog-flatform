@@ -18,7 +18,7 @@ A full-stack blog platform featuring an admin panel for content management and a
 - **User Interface**
   - Browse published blog posts
   - View detailed post content
-  - Responsive design for all devices
+  - Responsive design
   - Clean and intuitive interface
 
 ## Technology Stack
