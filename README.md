@@ -66,6 +66,7 @@ blog-platform/
 ├── api/                # NestJS backend
 ├── web/                # React frontend
 ├── blog-platform.postman_collection.json
+├── docker-compose.yml
 └── README.md
 ```
 
@@ -129,9 +130,6 @@ http://localhost:3004/api-docs/#/
 cd api
 # Run unit tests
 npm run test
-
-# Run e2e tests
-npm run test:e2e
 
 # Generate test coverage
 npm run test:cov
