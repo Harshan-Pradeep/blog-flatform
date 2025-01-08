@@ -36,6 +36,7 @@ A full-stack blog platform featuring an admin panel for content management and a
 - Jest for unit testing
 
 ## Interface Previews
+![Home Panel Interface](./web/src/assets/home-1.svg)
 
 ## Prerequisites
 
