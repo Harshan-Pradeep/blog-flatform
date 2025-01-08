@@ -36,20 +36,22 @@ A full-stack blog platform featuring an admin panel for content management and a
 - Jest for unit testing
 
 ## Interface Previews
-Home pannel
+
+Home panel  
 ![Home Panel Interface](./web/src/assets/home-1.png)
 
-Blog post card
+Blog post card  
 ![Home Panel Interface](./web/src/assets/home-2.png)
 
-Login pannel
+Login panel  
 ![Login Panel Interface](./web/src/assets/login.png)
 
-Dashboard pannel
+Dashboard panel  
 ![Dashboard Panel Interface](./web/src/assets/dashboard-1.png)
 
-Add blog post pannel
+Add blog post panel  
 ![Dashboard Panel Interface](./web/src/assets/dashboard-2.png)
+
 
 ## Prerequisites
 
