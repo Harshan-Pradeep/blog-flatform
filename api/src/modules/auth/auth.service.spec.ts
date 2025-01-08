@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { CookieService } from './cookie.service';
 import { User } from './entities/user.entity';
 import { IUserRepository } from './repositories/user.repository.interface';
@@ -78,7 +78,7 @@ describe('AuthService', () => {
 
     it('should successfully register a new user', async () => {
       const hashedPassword = 'hashedPassword';
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue(hashedPassword as never);
+      jest.spyOn(bcryptjs, 'hash').mockResolvedValue(hashedPassword as never);
 
       const newUser = {
         id: 1,
@@ -126,7 +126,7 @@ describe('AuthService', () => {
 
     it('should return user if credentials are valid', async () => {
       mockUserRepository.findByEmail.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+      jest.spyOn(bcryptjs, 'compare').mockResolvedValue(true as never);
 
       const result = await service.validateUser(email, password);
 
@@ -135,7 +135,7 @@ describe('AuthService', () => {
         email: mockUser.email
       }));
       expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(email);
-      expect(bcrypt.compare).toHaveBeenCalledWith(password, hashedPassword);
+      expect(bcryptjs.compare).toHaveBeenCalledWith(password, hashedPassword);
     });
 
     it('should return null if user not found', async () => {
@@ -149,13 +149,13 @@ describe('AuthService', () => {
 
     it('should return null if password is incorrect', async () => {
       mockUserRepository.findByEmail.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never);
+      jest.spyOn(bcryptjs, 'compare').mockResolvedValue(false as never);
 
       const result = await service.validateUser(email, password);
 
       expect(result).toBeNull();
       expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(email);
-      expect(bcrypt.compare).toHaveBeenCalledWith(password, mockUser.password);
+      expect(bcryptjs.compare).toHaveBeenCalledWith(password, mockUser.password);
     });
   });
 
